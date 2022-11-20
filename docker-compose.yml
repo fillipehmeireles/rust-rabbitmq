@@ -1,0 +1,35 @@
+version: "3.4"
+
+services:
+  consumer:
+    build:
+      dockerfile: ./consumer/Dockerfile
+      context: ./consumer
+    depends_on:
+      - rabbitmq
+      - producer
+    network:
+      - rust-dev
+  producer:
+    build:
+      dockerfile: ./producer/Dockerfile
+      context: ./producer
+    depends_on:
+      - rabbitmq
+    network:
+      - rust-dev
+
+    rabbitmq:
+      image: rabbitmq:3-management
+      hostname: rabbitmqrust
+      container_name: rust-rabbitmq
+      ports:
+        - 5672:5672
+        - 15672:15672
+      volumes:
+        - ./docker/rabbitmq:/var/lib/rabbitmq
+      networks:
+        - rust-dev
+networks:
+  rust-dev:
+    driver: bridge
