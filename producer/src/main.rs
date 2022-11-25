@@ -20,7 +20,7 @@ fn main() -> Result<()> {
 
     let producer = Producer::new();
 
-    let mut conn = Connection::open(&producer.connection_string)?;
+    let mut conn = Connection::insecure_open(&producer.connection_string)?;
 
     let channel = conn.open_channel(None)?;
     let exchange = Exchange::direct(&channel);

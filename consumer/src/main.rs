@@ -1,5 +1,6 @@
 extern crate dotenv;
 use amiquip::{Connection, ConsumerMessage, ConsumerOptions, QueueDeclareOptions, Result};
+use dotenv::dotenv;
 use std::env;
 
 struct Consumer {
@@ -15,7 +16,9 @@ impl Consumer {
 }
 
 fn main() -> Result<()> {
+    dotenv().ok();
     let consumer = Consumer::new();
+    println!("{}", consumer.connection_string);
     let mut conn = Connection::insecure_open(&consumer.connection_string)?;
 
     let channel = conn.open_channel(None)?;
